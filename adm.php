@@ -80,7 +80,8 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'main';
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-success" type="submit">Cadastrar</button>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#cadastrarModal">Cadastrar</button>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
@@ -93,43 +94,49 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'main';
 
     <div class="container-fluid">
         <div class="row text-center">
-            <?php
-            $carros = listarTabela("idcarro, nome, descricao, imagem, data_criacao", 'carro', 'idcarro');
-            if ($carros) {
-
-                foreach ($carros as $carrosItem) {
-
-                    $idcarro = $carrosItem->idcarro;
-                    $nome = $carrosItem->nome;
-                    $descricao = $carrosItem->descricao;
-                    $imagem = $carrosItem->imagem;
-                    $data_criacao = $carrosItem->data_criacao;
-                    ?>
-                    <div class="col-sm-2 col-md-3 col-lg-4 p-5 text-center">
-                        <div class="card" style="width: 100%; height: 100%;">
-                            <img src="img/<?php echo $imagem; ?>" class="card-img-top" alt="<?php echo $imagem; ?>">
-                            <div class="card-body text-center ">
-                                <h5 class="card-title">
-                                    <?php echo $nome; ?>
-                                </h5>
-                                <p class="card-text">
-                                    <?php echo $descricao; ?>
-                                </p>
-
-                                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-                    <?php
-                }
-            }
-            ?>
+            <?php include "carros.php"; ?>
         </div>
     </div>
+
+
+
+
+
+
+    <!-- Modal de Cadastro -->
+    <div class="modal fade" id="cadastrarModal" tabindex="-1" role="dialog" aria-labelledby="cadastrarModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cadastrarModalLabel">Cadastrar Registro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="inserirCarro.php" method="post">
+                        <!-- Campos do formulário para inserir um novo registro -->
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="Insnome" name="Insnome" class="form-control" required>
+
+                        <label for="nome">Descricão:</label>
+                        <input type="text" id="Insdescricao" name="Insdescricao" class="form-control" required>
+
+                        <label for="nome">Imagem:</label>
+                        <input type="text" id="Insimagem" name="Insimagem" class="form-control mb-3" required>
+
+                        <!-- Adicione outros campos conforme necessário -->
+
+                        <!-- Botões para submeter o formulário ou fechar a modal -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/func.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
