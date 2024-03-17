@@ -17,8 +17,7 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'main';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>ADM</title>
 </head>
 
@@ -56,10 +55,8 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'main';
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <a class="navbar-brand" href="adm.php?search=">Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -70,31 +67,23 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'main';
                     <li class="nav-item">
                         <a class="nav-link" href="sair.php">Sair</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Sanfona
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Acao</a></li>
-                        </ul>
-                    </li>
                     <li class="nav-item">
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#cadastrarModal">Cadastrar</button>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cadastrarModal">Cadastrar</button>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="post">Search</button>
+                <form class="d-flex" action="adm.php" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" name="search">
+                    <button class="btn btn-outline-success" type="submit">Buscar</button>
                 </form>
+
+
             </div>
         </div>
     </nav>
 
     <div class="container-fluid">
         <div class="row text-center">
-            <?php include "carros.php"; ?>
+            <?php include "carrosAdm.php"; ?>
         </div>
     </div>
 
@@ -104,8 +93,7 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'main';
 
 
     <!-- Modal de Cadastro -->
-    <div class="modal fade" id="cadastrarModal" tabindex="-1" role="dialog" aria-labelledby="cadastrarModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="cadastrarModal" tabindex="-1" role="dialog" aria-labelledby="cadastrarModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -113,16 +101,16 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'main';
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="inserirCarro.php" method="post">
+                    <form action="inserirCarro.php" method="post" enctype="multipart/form-data">
                         <!-- Campos do formulário para inserir um novo registro -->
                         <label for="nome">Nome:</label>
                         <input type="text" id="Insnome" name="Insnome" class="form-control" required>
 
-                        <label for="nome">Descricão:</label>
+                        <label for="nome">Descrição:</label>
                         <input type="text" id="Insdescricao" name="Insdescricao" class="form-control" required>
 
-                        <label for="nome">Imagem:</label>
-                        <input type="text" id="Insimagem" name="Insimagem" class="form-control mb-3" required>
+                        <label for="imagem">Imagem:</label>
+                        <input type="file" id="Insimagem" name="Insimagem" class="form-control mb-3" required>
 
                         <!-- Adicione outros campos conforme necessário -->
 
@@ -133,14 +121,13 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'main';
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
 
     <script src="js/func.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>

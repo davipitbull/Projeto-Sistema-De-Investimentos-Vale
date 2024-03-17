@@ -1,42 +1,53 @@
 <?php
+session_start();
 include_once "./config/conexao.php";
 include_once "./config/constantes.php";
 include_once "./func/func.php";
 
-// Verifica se o formulário foi submetido
+// Verifica se o usuário está autenticado
+if (!isset($_SESSION['idadm'])) {
+    header('location: login.php');
+    exit(); // Encerra o script para evitar execução desnecessária
+}
+
+// Conecta ao banco de dados usando PDO
+$conexao = conectar();
+
+// Verifica se o formulário foi enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtém os dados do formulário
-    $nome = $_POST["Insnome"]; 
-    $descricao = $_POST["Insdescricao"]; 
-    $imagem = $_POST["Insimagem"]; 
+    $nome = $_POST['Insnome'];
+    $descricao = $_POST['Insdescricao'];
 
-    // Valide os dados conforme necessário
+    // Verifica se uma imagem foi enviada
+    if ($_FILES['Insimagem']['error'] == UPLOAD_ERR_OK) {
+        // Diretório onde as imagens serão armazenadas
+        $diretorio = 'img/';
 
-    try {
-        // Conecta ao banco de dados usando PDO
-        $conexao = conectar();
+        // Move a imagem para o diretório de destino
+        $caminho_imagem = $diretorio . basename($_FILES['Insimagem']['name']);
+        if (move_uploaded_file($_FILES['Insimagem']['tmp_name'], $caminho_imagem)) {
+            // Pega apenas o nome do arquivo da imagem
+            $nome_imagem = basename($_FILES['Insimagem']['name']);
 
-        // Prepara a consulta SQL para inserir um novo registro na tabela teste1
-        $query = "INSERT INTO carro (nome, descricao, imagem) VALUES (:nome, :descricao, :imagem)"; // Insere a data atual como cadastro
-        $stmt = $conexao->prepare($query);
+            // Insere o registro no banco de dados com o nome da imagem
+            $stmt = $conexao->prepare("INSERT INTO carro (nome, descricao, imagem) VALUES (:nome, :descricao, :imagem)");
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':descricao', $descricao);
+            $stmt->bindParam(':imagem', $nome_imagem);
 
-        // Substitui os parâmetros da consulta pelos valores dos dados do formulário
-        $stmt->bindParam(":nome", $nome);
-        $stmt->bindParam(":descricao", $descricao);
-        $stmt->bindParam(":imagem", $imagem);
-        // Executa a consulta
-        $stmt->execute();
-
-        // Redireciona de volta para a página principal ou para onde desejar após a inserção
-        header("Location: adm.php");
-        exit();
-    } catch (PDOException $e) {
-        // Em caso de erro, você pode tratar de acordo com suas necessidades
-        echo "Erro ao inserir registro: " . $e->getMessage();
+            if ($stmt->execute()) {
+                // Redireciona para a página principal ou exibe uma mensagem de sucesso
+                header('location: adm.php');
+                exit(); // Encerra o script para evitar execução desnecessária
+            } else {
+                echo "Erro ao inserir registro no banco de dados.";
+            }
+        } else {
+            echo "Erro ao mover o arquivo de imagem.";
+        }
+    } else {
+        echo "Erro ao enviar a imagem.";
     }
-} else {
-    // Se o formulário não foi submetido, redireciona de volta para a página principal
-    header("Location: adm.php");
-    exit();
 }
 ?>

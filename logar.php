@@ -1,26 +1,54 @@
 <?php
-include_once"./config/conexao.php";
-include_once"./config/constantes.php";
-include_once"./func/func.php";
+include_once "./config/conexao.php";
+include_once "./config/constantes.php";
+include_once "./func/func.php";
 
-$return = conectar();
+$conn = conectar();
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
+    // Verifique se o usuário é administrador
+    $query = "SELECT * FROM adm WHERE email = :email AND senha = :senha";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':senha', $password);
+    $stmt->execute();
+    $admin = $stmt->fetch();
 
-$dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+    if ($admin) {
+        // Usuário é administrador, redireciona para adm.php e define mensagem de sucesso
+        session_start();
+        $_SESSION['idadm'] = $admin['idadm'];
+        header('location: adm.php');
+        exit();
+    }
 
+    // Verifique se o usuário é cliente
+    $query = "SELECT * FROM cliente WHERE email = :email AND senha = :senha";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':senha', $password);
+    $stmt->execute();
+    $cliente = $stmt->fetch();
 
-$email = $dados['email'];
-$pass = $dados['password'];
+    if ($cliente) {
+        // Usuário é cliente, redireciona para cliente.php e define mensagem de sucesso
+        session_start();
+        $_SESSION['idcliente'] = $cliente['idcliente'];
+        header('location: cliente.php');
+        exit();
+    }
 
-$validar = ValidarSenha('nome, senha, email, idadm, cadastro, alteracao, ativo', 'adm', 'senha', 'email', $pass, $email, 'ativo', '1');
-if ($validar != 'Vazio') {
-    foreach($validar as $validaritem)
-    $_SESSION['idadm'] = $validaritem->idadm;
-    $_SESSION['email'] = $validaritem->email;
-    $_SESSION['nome'] = $validaritem->nome;
-    echo json_encode(['success' => true, 'message' => "Logado com sucesso"]);
-    header("location: adm.php");
+    // Se não for encontrado nenhum usuário com o email e senha fornecidos, define mensagem de erro
+    session_start();
+    $_SESSION['error_message'] = "Usuário ou senha incorretos!";
+    header('location: login.php');
 } else {
-    echo json_encode(['success' => false, 'message' => 'Usuário ou senha errado']);
-} 
+    // Se não for uma solicitação POST, redirecione de volta para a página de login com mensagem de erro
+    session_start();
+    $_SESSION['error_message'] = "Método de requisição inválido!";
+    header('location: login.php');
+}
+?>

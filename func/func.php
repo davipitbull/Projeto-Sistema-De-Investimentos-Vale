@@ -183,3 +183,24 @@ function excluirCampo($tabela, $idCampo, $idCampoValor)
         $conn = null;
     }
 }
+
+function listarTabela2($campos, $tabela, $campoOrdem, $condicao = "")
+{
+    $conn = conectar();
+    try {
+        $conn->beginTransaction();
+        $sqlLista = $conn->prepare("SELECT $campos FROM $tabela $condicao ORDER BY $campoOrdem");
+        $sqlLista->execute();
+        $conn->commit();
+        if ($sqlLista->rowCount() > 0) {
+            return $sqlLista->fetchAll(PDO::FETCH_OBJ);
+        } else {
+            return 'Vazio';
+        };
+    } catch (PDOException $e) {
+        echo 'Exception -> ';
+        return ($e->getMessage());
+        $conn->rollback();
+    }
+    $conn = null;
+}
