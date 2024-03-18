@@ -12,7 +12,8 @@ if (!empty($search)) {
     $whereClause = "WHERE nome LIKE '%$search%' OR descricao LIKE '%$search%'";
 }
 
-$carros = listarTabela2("idcarro, nome, descricao, imagem, data_criacao, alteracao, ativo", 'carro', 'idcarro', $whereClause);
+$carros = listarTabela2("idcarro, nome, descricao, imagem, data_criacao, alteracao, ativo, valor_investido", 'carro', 'idcarro', $whereClause);
+
 
 // Verifica se $carros é um array antes de usar o loop foreach
 if (is_array($carros) && count($carros) > 0) {
@@ -24,6 +25,7 @@ if (is_array($carros) && count($carros) > 0) {
         $data_criacao = $carrosItem->data_criacao;
         $alteracao = $carrosItem->alteracao;
         $ativo = $carrosItem->ativo;
+        $valor_investido = $carrosItem->valor_investido;
 ?>
         <div class="col-sm-2 col-md-3 col-lg-4 p-5 text-center">
             <div class="card" style="width: 100%; height: 100%;">
@@ -35,14 +37,12 @@ if (is_array($carros) && count($carros) > 0) {
                     <p class="card-text">
                         <?php echo $descricao; ?>
                     </p>
+                    <p class="card-text">
+                        Valor já investido: <?php echo $valor_investido; ?>
+                    </p>
 
                     <!-- Adicione o atributo data-* com os dados do carro -->
-                    <button class="btn btn-sm btn-success btn-invest"
-                            data-car-id="<?php echo $idcarro; ?>"
-                            data-car-name="<?php echo $nome; ?>"
-                            data-car-description="<?php echo $descricao; ?>"
-                            data-car-image="<?php echo $imagem; ?>"
-                    >
+                    <button class="btn btn-sm btn-success btn-invest" data-car-id="<?php echo $idcarro; ?>" data-car-name="<?php echo $nome; ?>" data-car-description="<?php echo $descricao; ?>" data-car-image="<?php echo $imagem; ?>">
                         Investir
                     </button>
 
@@ -62,21 +62,27 @@ if (is_array($carros) && count($carros) > 0) {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="investModalLabel">Investir em Carro</h5>
-                
+
             </div>
             <div class="modal-body">
                 <!-- Exibir imagem do carro -->
                 <img src="" id="carImage" class="img-fluid mb-2" alt="Car Image">
                 <!-- Formulário para inserir o valor do investimento -->
-                <div class="form-group">
-                    <label for="investmentAmount">Valor do Investimento:</label>
-                    <input type="number" class="form-control" id="investmentAmount" placeholder="Insira o valor a investir">
-                    <p style="color: green;" class="">Saldo disponível: <?php echo $saldo; ?></p>
-                </div>
+                <form id="investForm" action="processar_investimento.php" method="post">
+                    <div class="form-group">
+                        <label for="investmentAmount">Valor do Investimento:</label>
+                        <input type="number" class="form-control" id="investimento" placeholder="Insira o valor a investir" name="investimento" required>
+                        <p style="color: green;" class="">Saldo disponível: <?php echo $saldo; ?></p>
+                        <input type="hidden" name="idcarro" value="" class="carro-id-hidden">
+
+
+
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary" id="investButton">Investir</button>
+                <button type="submit" class="btn btn-primary" id="investButton">Investir</button>
+                </form>
             </div>
         </div>
     </div>
@@ -84,6 +90,39 @@ if (is_array($carros) && count($carros) > 0) {
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+
+$(document).ready(function() {
+    // Função para processar o investimento
+    $('#investButton').click(function(event) {
+        // Evitar o envio do formulário se o campo de investimento estiver vazio
+
+
+        // Lógica para processar o investimento
+        var investmentAmount = parseFloat($('#investimento').val());
+        var saldoDisponivel = parseFloat('<?php echo $saldo; ?>'); // Obtém o saldo disponível do PHP
+        if (isNaN(investmentAmount) || investmentAmount <= 0) {
+            alert('Por favor, insira um valor de investimento válido.');
+            event.preventDefault(); // Evitar o envio do formulário
+            return;
+        }
+
+        // Verificar se o saldo é suficiente
+        if (investmentAmount > saldoDisponivel) {
+            alert('Saldo insuficiente para realizar o investimento.');
+            event.preventDefault(); // Evitar o envio do formulário
+            return;
+        }
+
+        // Se todas as validações passarem, o formulário será enviado normalmente
+    });
+});
+
+    
+
+    
+
+
+
     $(document).ready(function() {
         // Função para abrir a modal de investimento e preencher informações
         $('.btn-invest').click(function() {
@@ -92,6 +131,9 @@ if (is_array($carros) && count($carros) > 0) {
             var carName = $(this).data('car-name');
             var carDescription = $(this).data('car-description');
             var carImage = $(this).data('car-image');
+
+            // Defina o ID do carro no campo de entrada invisível
+            $('.carro-id-hidden').val(carId);
 
             // Exibir informações na modal
             $('#carImage').attr('src', 'img/' + carImage);
@@ -102,9 +144,11 @@ if (is_array($carros) && count($carros) > 0) {
 
         // Função para processar o investimento
         $('#investButton').click(function() {
-            var investmentAmount = $('#investmentAmount').val();
+            var investmentAmount = $('#investimento').val();
             // Lógica para processar o investimento
             // ...
         });
     });
+
+
 </script>

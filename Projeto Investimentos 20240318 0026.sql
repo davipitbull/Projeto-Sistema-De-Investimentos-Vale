@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.32-MariaDB
+-- Server version	5.5.5-10.4.28-MariaDB
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -18,11 +18,11 @@
 -- Create schema projetoinvestimentos
 --
 
-CREATE DATABASE IF NOT EXISTS projetoinvestimentos;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ projetoinvestimentos;
 USE projetoinvestimentos;
 
 --
--- Definition of table `adm`
+-- Table structure for table `projetoinvestimentos`.`adm`
 --
 
 DROP TABLE IF EXISTS `adm`;
@@ -33,7 +33,7 @@ CREATE TABLE `adm` (
   `senha` varchar(255) NOT NULL,
   `cpf` varchar(14) DEFAULT NULL,
   `ocupacao` varchar(100) DEFAULT NULL,
-  `saldo` decimal(10,2) DEFAULT 100.00,
+  `saldo` decimal(10,2) DEFAULT 10000.00,
   `alteracao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `cadastro` timestamp NOT NULL DEFAULT current_timestamp(),
   `ativo` tinyint(1) DEFAULT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `adm` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `adm`
+-- Dumping data for table `projetoinvestimentos`.`adm`
 --
 
 /*!40000 ALTER TABLE `adm` DISABLE KEYS */;
@@ -51,7 +51,7 @@ INSERT INTO `adm` (`idadm`,`nome`,`email`,`senha`,`cpf`,`ocupacao`,`saldo`,`alte
 
 
 --
--- Definition of table `carro`
+-- Table structure for table `projetoinvestimentos`.`carro`
 --
 
 DROP TABLE IF EXISTS `carro`;
@@ -61,32 +61,30 @@ CREATE TABLE `carro` (
   `descricao` varchar(255) DEFAULT NULL,
   `imagem` varchar(255) DEFAULT NULL,
   `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `valor_investido` decimal(10,2) DEFAULT 0.00,
   `alteracao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `ativo` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`idcarro`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `carro`
+-- Dumping data for table `projetoinvestimentos`.`carro`
 --
 
 /*!40000 ALTER TABLE `carro` DISABLE KEYS */;
-INSERT INTO `carro` (`idcarro`,`nome`,`descricao`,`imagem`,`data_criacao`,`alteracao`,`ativo`) VALUES 
- (1,'Fiat Uno','Carro econômico e prático.','foto1.jpg','2024-03-13 15:19:28','2024-03-13 15:23:54',1),
- (2,'Volkswagen Gol','Um dos carros mais vendidos no Brasil.','foto1.jpg','2024-03-13 15:19:28','2024-03-13 15:23:54',1),
- (3,'Ford Ka','Compacto e ágil.','foto1.jpg','2024-03-13 15:19:28','2024-03-13 15:23:54',1),
- (4,'Chevrolet Onix','Confortável e com boa tecnologia.','foto1.jpg','2024-03-13 15:19:28','2024-03-13 15:23:54',1),
- (5,'Renault Kwid','Carro urbano e econômico.','foto1.jpg','2024-03-13 15:19:28','2024-03-13 15:23:54',1),
- (6,'Toyota Corolla','Um dos sedãs mais populares.','foto1.jpg','2024-03-13 15:19:28','2024-03-13 15:23:54',1),
- (7,'Honda Civic','Elegância e desempenho.','foto1.jpg','2024-03-13 15:19:28','2024-03-13 15:23:54',1),
- (8,'Hyundai HB20','Design moderno e bom custo-benefício.','foto1.jpg','2024-03-13 15:19:28','2024-03-13 15:23:54',1),
- (9,'Nissan Versa','Espaçoso e confortável.','foto1.jpg','2024-03-13 15:19:28','2024-03-13 15:23:54',1),
- (10,'Jeep Renegade','SUV compacto e versátil.','foto1.jpg','2024-03-13 15:19:28','2024-03-13 15:23:54',1);
+INSERT INTO `carro` (`idcarro`,`nome`,`descricao`,`imagem`,`data_criacao`,`valor_investido`,`alteracao`,`ativo`) VALUES 
+ (4,'Chevrolet Onix','Confortável e com boa tecnologia.','foto1.jpg','2024-03-13 15:19:28','3029.00','2024-03-18 00:24:43',1),
+ (5,'Renault Kwid','Carro urbano e econômico.dawwd','foto1.jpg','2024-03-13 15:19:28','10.00','2024-03-17 22:51:24',1),
+ (6,'Toyota Corolla','Um dos sedãs mais populares.','foto1.jpg','2024-03-13 15:19:28','1900.00','2024-03-17 22:44:32',1),
+ (7,'Honda Civic','Elegância e desempenho.','foto1.jpg','2024-03-13 15:19:28','0.00','2024-03-13 15:23:54',1),
+ (8,'Hyundai HB20','Design moderno e bom custo-benefício.','foto1.jpg','2024-03-13 15:19:28','0.00','2024-03-13 15:23:54',1),
+ (9,'Nissan Versa','Espaçoso e confortável.','foto1.jpg','2024-03-13 15:19:28','6.00','2024-03-17 22:33:08',1),
+ (21,'Gol Quadrado','Receba','EXEMPLO.jpg','2024-03-17 22:46:55','1000.00','2024-03-17 23:35:34',NULL);
 /*!40000 ALTER TABLE `carro` ENABLE KEYS */;
 
 
 --
--- Definition of table `cliente`
+-- Table structure for table `projetoinvestimentos`.`cliente`
 --
 
 DROP TABLE IF EXISTS `cliente`;
@@ -97,23 +95,26 @@ CREATE TABLE `cliente` (
   `senha` varchar(255) NOT NULL,
   `cpf` varchar(14) DEFAULT NULL,
   `ocupacao` varchar(100) DEFAULT NULL,
-  `saldo` decimal(10,2) DEFAULT 100.00,
+  `saldo` decimal(10,2) DEFAULT 10000.00,
   `alteracao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `cadastro` timestamp NOT NULL DEFAULT current_timestamp(),
   `ativo` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`idcliente`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `cliente`
+-- Dumping data for table `projetoinvestimentos`.`cliente`
 --
 
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
+INSERT INTO `cliente` (`idcliente`,`nome`,`email`,`senha`,`cpf`,`ocupacao`,`saldo`,`alteracao`,`cadastro`,`ativo`) VALUES 
+ (1,'david','777dahnobeat@gmail.com','12345678','18796736658','Aluno','7076.00','2024-03-17 22:44:32','2024-03-16 22:22:24',NULL),
+ (2,'Julio','julio@gmail.com','12345678','18796736652','Alunoo','6973.00','2024-03-18 00:24:43','2024-03-17 22:50:32',NULL);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 
 
 --
--- Definition of table `proprietario`
+-- Table structure for table `projetoinvestimentos`.`proprietario`
 --
 
 DROP TABLE IF EXISTS `proprietario`;
@@ -133,7 +134,7 @@ CREATE TABLE `proprietario` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `proprietario`
+-- Dumping data for table `projetoinvestimentos`.`proprietario`
 --
 
 /*!40000 ALTER TABLE `proprietario` DISABLE KEYS */;
@@ -146,12 +147,10 @@ INSERT INTO `proprietario` (`idproprietario`,`nome`,`email`,`cpf`,`ocupacao`,`al
  (6,'Fernanda Lima','fernanda@example.com','789.123.456-10','Estudante','2024-03-13 15:19:28','2024-03-13 15:19:28',1,NULL),
  (7,'Roberto Santos','roberto@example.com','234.567.891-10','Empresário','2024-03-13 15:19:28','2024-03-13 15:19:28',1,NULL),
  (8,'Juliana Ferreira','juliana@example.com','890.123.456-10','Designer','2024-03-13 15:19:28','2024-03-13 15:19:28',1,NULL),
- (9,'Ricardo Nunes','ricardo@example.com','345.678.912-10','Programador','2024-03-13 15:19:28','2024-03-13 15:19:28',1,NULL),
+ (9,'Ricardo Nunes','ricardo@example.com','345.678.912-10','Programador','2024-03-13 15:19:28','2024-03-13 15:19:28',1,NULL);
+INSERT INTO `proprietario` (`idproprietario`,`nome`,`email`,`cpf`,`ocupacao`,`alteracao`,`cadastro`,`ativo`,`idcarro`) VALUES 
  (10,'Patrícia Costa','patricia@example.com','567.891.234-10','Contadora','2024-03-13 15:19:28','2024-03-13 15:19:28',1,NULL);
 /*!40000 ALTER TABLE `proprietario` ENABLE KEYS */;
-
-
-
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

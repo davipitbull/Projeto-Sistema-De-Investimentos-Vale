@@ -12,7 +12,7 @@ if (!empty($search)) {
     $whereClause = "WHERE nome LIKE '%$search%' OR descricao LIKE '%$search%'";
 }
 
-$carros = listarTabela2("idcarro, nome, descricao, imagem, data_criacao, alteracao, ativo", 'carro', 'idcarro', $whereClause);
+$carros = listarTabela2("idcarro, nome, descricao, imagem, data_criacao, alteracao, ativo, valor_investido", 'carro', 'idcarro', $whereClause);
 
 // Verifica se $carros é um array antes de usar o loop foreach
 if (is_array($carros) && count($carros) > 0) {
@@ -24,6 +24,7 @@ if (is_array($carros) && count($carros) > 0) {
         $data_criacao = $carrosItem->data_criacao;
         $alteracao = $carrosItem->alteracao;
         $ativo = $carrosItem->ativo;
+        $valor_investido = $carrosItem->valor_investido;
 ?>
         <div class="col-sm-2 col-md-3 col-lg-4 p-5 text-center">
             <div class="card" style="width: 100%; height: 100%;">
@@ -34,6 +35,9 @@ if (is_array($carros) && count($carros) > 0) {
                     </h5>
                     <p class="card-text">
                         <?php echo $descricao; ?>
+                    </p>
+                    <p class="card-text">
+                        Valor já investido: <?php echo $valor_investido; ?>
                     </p>
                     <!-- Passando os valores corretos para a função abrirModal() -->
                 </div>
