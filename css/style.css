@@ -1,0 +1,47 @@
+.click_branco:hover {
+    text-decoration-line: underline !important;
+
+}
+
+.place_branco::placeholder {
+    color: gray !important;
+}
+
+.btn_buscar:hover {
+    background-color: #121516;
+    color: gray !important;
+    border-radius: 3px;
+    box-shadow: -2px -2px 7px 2px white, 2px 2px 7px 2px white !important;
+    transition: 0.5s;
+}
+
+.btn_buscar::placeholder {
+    color: gray !important;
+}
+
+.focus_branco:focus {
+    border-radius: 3px;
+    box-shadow: -3px -3px 10px 3px white, 3px 3px 10px 3px white !important;
+    border: 1px solid black !important;
+    transition: 0.5s;
+}
+
+.borda_card_solid {
+    border: 10px solid #121516 !important;
+}
+
+.btn_buscar_2:hover {
+    background-color: #121516;
+    color: white !important;
+    border-radius: 3px;
+    box-shadow: -2px -2px 7px 2px white, 2px 2px 7px 2px white;
+    transition: 0.5s;
+}
+
+.btn_buscar_2::placeholder {
+    color: white !important;
+}
+
+.linha_palavra{
+    text-shadow:#000 1px -1px 2px, #000 -1px 1px 2px, #000 1px 1px 2px, #000 -1px -1px 2px
+}

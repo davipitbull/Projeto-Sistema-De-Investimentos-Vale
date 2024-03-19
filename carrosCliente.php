@@ -28,16 +28,16 @@ if (is_array($carros) && count($carros) > 0) {
         $valor_investido = $carrosItem->valor_investido;
 ?>
         <div class="col-sm-2 col-md-3 col-lg-4 p-5 text-center">
-            <div class="card" style="width: 100%; height: 100%;">
-                <img src="img/<?php echo $imagem; ?>" class="card-img-top" alt="<?php echo $imagem; ?>">
-                <div class="card-body text-center ">
-                    <h5 class="card-title">
+            <div class="card borda_card_solid" style="width: 100%; height: 100%;">
+                <img src="img/<?php echo $imagem; ?>" class="card-img-top rounded-0" alt="<?php echo $imagem; ?>">
+                <div class="card-body text-center" style="border-top: 10px solid #121516" >
+                    <h5 class="card-title" style="font-size: 20px">
                         <?php echo $nome; ?>
                     </h5>
                     <p class="card-text">
                         <?php echo $descricao; ?>
                     </p>
-                    <p class="card-text">
+                    <p class="card-text" style="font-size: 18px">
                         Valor já investido: <?php echo $valor_investido; ?>
                     </p>
 
@@ -60,28 +60,27 @@ if (is_array($carros) && count($carros) > 0) {
 <div class="modal fade" id="investModal" tabindex="-1" role="dialog" aria-labelledby="investModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="investModalLabel">Investir em Carro</h5>
+            <div class="modal-header " style="background-color: #5E6A72">
+                <h5 class="modal-title text-white" id="investModalLabel">Investir em Carro</h5>
 
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="background-color: #363D45">
                 <!-- Exibir imagem do carro -->
-                <img src="" id="carImage" class="img-fluid mb-2" alt="Car Image">
+                <img src="" id="carImage" class="img-fluid mb-2 borda_card_solid " alt="Car Image">
                 <!-- Formulário para inserir o valor do investimento -->
                 <form id="investForm" action="processar_investimento.php" method="post">
                     <div class="form-group">
-                        <label for="investmentAmount">Valor do Investimento:</label>
-                        <input type="number" class="form-control" id="investimento" placeholder="Insira o valor a investir" name="investimento" required>
-                        <p style="color: green;" class="">Saldo disponível: <?php echo $saldo; ?></p>
+                        <label class="text-white" for="investmentAmount">Valor do Investimento:</label>
+                        <input type="number" style="background-color: #4A5057" class="form-control me-2 place_branco focus_branco text-white" id="investimento" placeholder="Insira o valor a investir" name="investimento" required>
+                        <p style="color: green;" class=""><span class="text-white">Saldo disponível:</span> <span style="color: greenyellow" class="linha_palavra"><?php echo $saldo; ?></span></p>
                         <input type="hidden" name="idcarro" value="" class="carro-id-hidden">
 
 
 
                     </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="submit" class="btn btn-primary" id="investButton">Investir</button>
+            <div class="modal-footer" style="background-color: #5E6A72">
+                <button type="submit" class="btn btn-outline btn_buscar_2" style="border: 1px solid white;background-color: #5E6A72" id="investButton">Investir</button>
                 </form>
             </div>
         </div>
