@@ -12,7 +12,7 @@ if (!empty($search)) {
     $whereClause = "WHERE nome LIKE '%$search%' OR descricao LIKE '%$search%'";
 }
 
-$carros = listarTabela2("idcarro, nome, descricao, imagem, data_criacao, alteracao, ativo, valor_investido", 'carro', 'idcarro', $whereClause);
+$carros = listarTabela2("idcarro, nome, descricao, imagem, data_criacao, alteracao, ativo, valor_investido, valor", 'carro', 'idcarro', $whereClause);
 
 
 if (is_array($carros) && count($carros) > 0) {
@@ -26,6 +26,7 @@ if (is_array($carros) && count($carros) > 0) {
         $alteracao = $carrosItem->alteracao;
         $ativo = $carrosItem->ativo;
         $valor_investido = $carrosItem->valor_investido;
+        $valor = $carrosItem->valor;
         ?>
         <div class="col-sm-2 col-md-3 col-lg-4 p-5 text-center">
             <div class="card borda_card_solid" style="width: 100%; height: 100%;">
@@ -39,6 +40,9 @@ if (is_array($carros) && count($carros) > 0) {
                     </h5>
                     <p class="card-text" style="font-size: 18px">
                         <?php echo $descricao; ?>
+                    </p>
+                    <p class="card-text" style="font-size: 18px">
+                        Preço: <?php echo $valor; ?>
                     </p>
                     <!-- Passando os valores corretos para a função abrirModal() -->
                     <form action="excluirCarro.php" method="post">

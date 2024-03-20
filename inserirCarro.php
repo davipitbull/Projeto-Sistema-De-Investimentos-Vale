@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtém os dados do formulário
     $nome = $_POST['Insnome'];
     $descricao = $_POST['Insdescricao'];
+    $valor = $_POST['Insvalor'];
 
     // Verifica se uma imagem foi enviada
     if ($_FILES['Insimagem']['error'] == UPLOAD_ERR_OK) {
@@ -31,10 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nome_imagem = basename($_FILES['Insimagem']['name']);
 
             // Insere o registro no banco de dados com o nome da imagem
-            $stmt = $conexao->prepare("INSERT INTO carro (nome, descricao, imagem) VALUES (:nome, :descricao, :imagem)");
+            $stmt = $conexao->prepare("INSERT INTO carro (nome, descricao, imagem, valor, valor_investido) VALUES (:nome, :descricao, :imagem, :valor, 0)");
             $stmt->bindParam(':nome', $nome);
             $stmt->bindParam(':descricao', $descricao);
             $stmt->bindParam(':imagem', $nome_imagem);
+            $stmt->bindParam(':valor', $valor);
 
             if ($stmt->execute()) {
                 // Redireciona para a página principal ou exibe uma mensagem de sucesso
