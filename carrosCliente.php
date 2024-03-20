@@ -91,7 +91,7 @@ if (is_array($carros) && count($carros) > 0) {
                                 <?php echo $saldo; ?>
                             </span></p>
                         <input type="hidden" name="idcarro" value="" class="carro-id-hidden">
-                        <input type="hidden" name="car_value" value="<?php echo $valor; ?>" class="carro-valor-hidden">
+                        <input type="hidden" name="car_value" value="" class="carro-valor-hidden">
                         <!-- Corrigido para enviar o valor do carro corretamente -->
 
 
