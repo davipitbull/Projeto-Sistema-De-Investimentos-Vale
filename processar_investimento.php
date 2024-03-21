@@ -5,8 +5,7 @@ include_once "./func/func.php";
 $return = conectar();
 
 // Obtenha o valor do investimento e o valor do carro enviados via POST
-$investmentAmount = $_POST['Qinvestimento'] ?? 0;
-$carValue = $_POST['car_value'] ?? 0;
+$investmentAmount = isset($_POST['Qinvestimento']) ? intval($_POST['Qinvestimento']) : 0;;
 $idCarro = $_POST['idcarro'] ?? 0;
 
 // Obter o valor do carro enviado via POST
@@ -46,8 +45,9 @@ if ($saldoAtual >= $totalInvestido) {
     // Atualizar o valor investido no carro
     $sqlAtualizarValorInvestido = "UPDATE carro SET valor_investido = valor_investido + :totalInvestido WHERE idcarro = :idCarro";
     $stmtAtualizarValorInvestido = $return->prepare($sqlAtualizarValorInvestido);
-    $stmtAtualizarValorInvestido->bindParam(':totalInvestido', $totalInvestido);
-    $stmtAtualizarValorInvestido->bindParam(':idCarro', $idCarro);
+    $stmtAtualizarValorInvestido->bindValue(':totalInvestido', $totalInvestido, PDO::PARAM_INT);
+    $stmtAtualizarValorInvestido->bindParam(':idCarro', $idCarro, PDO::PARAM_INT);
+    
 
 
     // Adicionar um echo para exibir a consulta antes de ser executada
@@ -71,4 +71,3 @@ if ($saldoAtual >= $totalInvestido) {
 } else {
     echo json_encode(array('success' => false, 'message' => 'Saldo insuficiente para realizar o investimento.'));
 }
-?>
