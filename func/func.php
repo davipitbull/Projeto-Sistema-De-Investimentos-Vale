@@ -204,3 +204,79 @@ function listarTabela2($campos, $tabela, $campoOrdem, $condicao = "")
     }
     $conn = null;
 }
+
+
+// Função para inserir um registro em uma tabela usando PDO
+function inserirRegistro($tabela, $dados) {
+    $conexao = conectar();
+    
+    // Construir a lista de colunas
+    $colunas = implode(', ', array_keys($dados));
+    
+    // Montar os parâmetros da consulta preparada
+    $parametros = ':' . implode(', :', array_keys($dados));
+    
+    try {
+        // Preparar a query SQL
+        $sql = "INSERT INTO $tabela ($colunas) VALUES ($parametros)";
+        $stmt = $conexao->prepare($sql);
+        
+        // Executar a query
+        $stmt->execute($dados);
+        
+        return true;
+    } catch(PDOException $e) {
+        return false;
+    }
+}
+
+// Função para atualizar um registro em uma tabela usando PDO
+function atualizarRegistro($tabela, $coluna, $valor, $condicao_coluna, $condicao_valor) {
+    $conexao = conectar();
+    
+    try {
+        // Preparar a query SQL
+        $sql = "UPDATE $tabela SET $coluna = :valor WHERE $condicao_coluna = :condicao_valor";
+        $stmt = $conexao->prepare($sql);
+        
+        // Bind dos parâmetros da consulta preparada
+        $stmt->bindParam(':valor', $valor);
+        $stmt->bindParam(':condicao_valor', $condicao_valor);
+        
+        // Executar a query
+        $stmt->execute();
+        
+        return true;
+    } catch(PDOException $e) {
+        return false;
+    }
+}
+
+// Função para buscar um registro em uma tabela usando PDO
+function buscarRegistro($tabela, $condicao_coluna, $condicao_valor) {
+    $conexao = conectar();
+    
+    try {
+        // Preparar a query SQL
+        $sql = "SELECT * FROM $tabela WHERE $condicao_coluna = :condicao_valor";
+        $stmt = $conexao->prepare($sql);
+        
+        // Bind do parâmetro da consulta preparada
+        $stmt->bindParam(':condicao_valor', $condicao_valor);
+        
+        // Executar a query
+        $stmt->execute();
+        
+        // Verificar se algum registro foi encontrado
+        if ($stmt->rowCount() > 0) {
+            // Retornar o primeiro registro encontrado como objeto
+            return $stmt->fetch(PDO::FETCH_OBJ);
+        } else {
+            // Se nenhum registro for encontrado, retornar falso
+            return false;
+        }
+    } catch(PDOException $e) {
+        return false;
+    }
+}
+?>

@@ -19,7 +19,6 @@ if (isset($cliente)) {
     $saldo = $item->saldo;
 };
 
-$currentPage = isset($_GET['page']) ? $_GET['page'] : 'main';
 ?>
 
 <html lang="pt-br">

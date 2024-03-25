@@ -29,7 +29,7 @@ if (is_array($carros) && count($carros) > 0) {
         $valor = $carrosItem->valor;
 
 ?>
-        <div class="col-sm-2 col-md-3 col-lg-4 p-5 text-center">
+        <div class="col-sm-4 col-md-4 col-lg-3 p-3">
             <div class="card borda_card_solid" style="width: 100%; height: 100%;">
                 <img src="img/<?php echo $imagem; ?>" class="card-img-top rounded-0" alt="<?php echo $imagem; ?>">
                 <div class="card-body text-center" style="border-top: 10px solid #121516">
